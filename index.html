@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💘 Gửi Đinh Vũ Lâm 💘</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #ffb3c6 0%, #ff8a9f 100%);
+            font-family: 'Patrick Hand', cursive, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: rgba(255, 250, 245, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 30px 22px;
+            border-radius: 48px 48px 48px 12px;
+            box-shadow: 0 15px 0 #ff4d6d, 0 20px 40px rgba(200, 0, 80, 0.25);
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            border: 4px solid white;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        h1 {
+            color: #b8004a;
+            font-size: 2.2rem;
+            margin: 0 0 12px 0;
+            text-shadow: 3px 3px 0 #ffb3c1;
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            color: #9f1f5c;
+            font-size: 1.7rem;
+            margin: 10px 0;
+        }
+
+        p {
+            font-size: 1.3rem;
+            color: #44001e;
+        }
+
+        .btn {
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 16px 20px;
+            font-size: 1.4rem;
+            border-radius: 60px;
+            margin: 12px 0;
+            width: 95%;
+            font-family: inherit;
+            font-weight: bold;
+            border-bottom: 8px solid #b8004a;
+            border-right: 6px solid #a3003c;
+            transition: 0.08s linear;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #6a0026;
+        }
+
+        .btn:hover {
+            background: #ff1a4c;
+            border-bottom-width: 4px;
+            border-right-width: 4px;
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #6a0026;
+        }
+
+        .btn:active {
+            transform: translateY(8px);
+            border-bottom-width: 2px;
+            border-right-width: 2px;
+            box-shadow: none;
+        }
+
+        .btn-small {
+            width: 60%;
+            background: #ff8c9f;
+            border-bottom-color: #a1354b;
+            font-size: 1.2rem;
+            padding: 12px;
+        }
+
+        .input-box {
+            width: 90%;
+            padding: 16px 18px;
+            border: 5px solid #ffb8c9;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            text-align: center;
+            font-family: inherit;
+            background: white;
+            color: #330013;
+            outline: none;
+            margin: 15px 0 5px;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .input-box:focus {
+            border-color: #ff4d6d;
+            background: #fff9fb;
+        }
+
+        .screen {
+            display: none;
+            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .shake {
+            animation: shake 0.45s infinite;
+        }
+
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .modal-content {
+            background: #fff7f9;
+            padding: 30px 20px;
+            border-radius: 70px 20px 70px 20px;
+            border: 6px solid #ffb3c6;
+            text-align: center;
+            max-width: 90%;
+            width: 450px;
+            box-shadow: 0 20px 0 #ff4d6d;
+            animation: bounce 0.35s;
+        }
+
+        @keyframes bounce {
+            0% { transform: scale(0.5) rotate(-5deg); }
+            80% { transform: scale(1.1) rotate(2deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+
+        .letter-unlock {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #d6285c;
+            text-shadow: 6px 6px 0 #ffe5e8;
+            display: block;
+            line-height: 1.2;
+            background: #ffe9ed;
+            border-radius: 40px;
+            margin: 15px 0;
+            padding: 0px 10px;
+            letter-spacing: 15px;
+        }
+
+        .progress-dots {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .dot {
+            height: 18px;
+            width: 18px;
+            background: #ffbbc5;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 3px 0 #b8b8b8;
+        }
+
+        .dot.active {
+            background: #ff1654;
+            border-color: #ffe600;
+            box-shadow: 0 0 0 3px white;
+            transform: scale(1.3);
+        }
+
+        .final-msg {
+            font-size: 1.9rem;
+            color: #a1044a;
+            background: #fff0f3;
+            padding: 25px 15px;
+            border-radius: 40px;
+            border: 4px dashed #ff4d6d;
+            margin: 25px 0;
+        }
+
+        .heart-bg {
+            position: fixed;
+            color: #ff9eb5;
+            pointer-events: none;
+            z-index: -1;
+            animation: fly 7s linear forwards;
+            font-size: 28px;
+        }
+
+        @keyframes fly {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .back-btn {
+            margin-top: 20px;
+            background: #a0a0a0;
+            border-bottom-color: #5a5a5a;
+            box-shadow: 0 6px 0 #3a3a3a;
+            font-size: 1.2rem;
+        }
+
+        .back-btn:hover {
+            background: #8a8a8a;
+        }
+
+        #hint {
+            display: none;
+        }
+
+        @media (max-width: 450px) {
+            .container { padding: 20px 12px; }
+            h1 { font-size: 1.8rem; }
+            .btn { font-size: 1.1rem; padding: 14px; }
+            .btn-small { width: 80%; }
+            .letter-unlock { font-size: 4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Màn hình chính: chọn gói + nút quay lại (mặc định không hiện, chỉ hiện khi cần) -->
+    <div id="screen-select" class="container screen active">
+        <h1>💌 ĐINH VŨ LÂM 💌</h1>
+        <p style="font-size:1.7rem; margin:0;">❤️ 14/02 ❤️</p>
+        <p style="background: #ffe5e8; border-radius: 30px; padding: 12px;">Hôm nay anh có thử thách siêu cấp dành cho em! Chọn ngay một gói để nhận mật thư 🥰</p>
+        <button class="btn" onclick="startQuiz(1)">🌸 GÓI 1: YOU AND ME 🌸</button>
+        <button class="btn" onclick="startQuiz(2)">🎧 GÓI 2: TEAM "SỚM MUỘN THÌ" 🎧</button>
+        
+        <!-- Nút quay lại - mặc định ẩn, chỉ hiện khi đã chọn gói và muốn quay lại -->
+        <button id="back-to-select-btn" class="btn back-btn" onclick="backToSelect()" style="display: none;">⬅️ QUAY LẠI CHỌN GÓI</button>
+    </div>
+
+    <!-- Màn hình câu hỏi -->
+    <div id="screen-quiz" class="container screen">
+        <div class="progress-dots" id="dots"></div>
+        <h2 id="question-text">Đang tải câu hỏi...</h2>
+        <input type="text" id="answer-input" class="input-box" placeholder="Gõ câu trả lời..." autocomplete="off">
+        <button class="btn" onclick="checkAnswer()">✅ CHỐT ĐƠN ✅</button>
+        <p style="color:#b0306e; margin-top: 5px;">✨ nhấn Enter cũng được nè ✨</p>
+        <button class="btn btn-small" onclick="confirmBack()" style="background: #b8b8b8; border-bottom-color: #6e6e6e; margin-top: 30px;">🔙 THOÁT RA MÀN HÌNH CHÍNH</button>
+    </div>
+
+    <!-- Màn hình kết thúc -->
+    <div id="screen-result" class="container screen">
+        <h1>🎊 HOÀN HẢO 🎊</h1>
+        <p style="font-size:1.8rem;">Em là số 1!!!</p>
+        <div class="final-msg" id="final-message-text"></div>
+        <p style="font-size:2rem; color:#c9184a;">anh yêu em ❤️</p>
+        <button class="btn" onclick="location.reload()">💘 CHƠI LẠI 💘</button>
+        <button class="btn btn-small" onclick="backToSelectFromResult()" style="background: #ff8c9f; border-bottom-color: #a1354b; margin-top: 10px;">🔙 QUAY LẠI CHỌN GÓI</button>
+    </div>
+
+    <!-- Popup khi đúng -->
+    <div id="modal-correct" class="modal">
+        <div class="modal-content">
+            <h2 style="color:#a4133c; font-size:2rem;">BING BONG!</h2>
+            <p style="font-size:1.6rem;">Em mở được chữ:</p>
+            <span class="letter-unlock" id="unlocked-letter">A</span>
+            <button class="btn" onclick="nextQuestion()" style="background: #ff8c9f; border-bottom-color: #a1354b;">👉 TIẾP THEO 👈</button>
+        </div>
+    </div>
+
+    <!-- Popup xác nhận thoát -->
+    <div id="modal-confirm-back" class="modal">
+        <div class="modal-content">
+            <h2 style="color:#a4133c;">⚠️ THOÁT GAME ⚠️</h2>
+            <p style="font-size:1.5rem;">Em chắc chắn muốn quay lại chọn gói khác?</p>
+            <p style="font-size:1.1rem; color: gray;">Tiến trình sẽ bị mất đó nha!</p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button class="btn" onclick="backToSelect()" style="width: 45%; background: #ff4d6d;">✅ CÓ</button>
+                <button class="btn" onclick="closeConfirmModal()" style="width: 45%; background: #a0a0a0; border-bottom-color: #5a5a5a;">❌ KHÔNG</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ---------- 🍓 DỮ LIỆU CỰC YÊU - ĐÃ THÊM ĐÁP ÁN 🍓 ----------
+        const dataSet1 = {
+            questions: [
+                { q: "🎤 Chủ nhân bài 'Baby' huyền thoại là ai? ", a: ["bieber", "justin bieber"], char: "B" },
+                { q: "🌻 Post Malone có bài gì về loài hoa ĐVL rất thích? ", a: ["sunflower"], char: "O" },
+                { q: "😢 Người ở bên ĐVL hơn 10 năm nay, lúc vui lúc buồn? (MU / Manchester United / viết tắt)", a: ["mu", "manchester united"], char: "M" },
+                { q: "🎙️ Phúc Du rap: '... chối nhẹ nhàng thôi'. Điền từ còn thiếu?", a: ["từ"], char: "T" },
+                { q: "🔊 Rapper nào thường kết hợp với Masew ?", a: ["bray", "b ray"], char: "B" },
+                { q: "💰 Thứ em mong chờ mòn mỏi gần đây? (lương / tiền lương / lương tháng)", a: ["lương", "tiền lương"], char: "L" },
+                { q: "🔤 Chữ cái cuối cùng trong tên 'Phạm Anh Duy'?", a: ["y"], char: "Y" }
+            ],
+            finalMsg: "🧩 <b style='font-size:2rem;'>B · O · M · T · B · L · Y</b><br><br>💌 <span style='background:#ffe0e5; padding:12px; display:inline-block; border-radius:30px;'>BẠN ƠI MÌNH THÍT BẠN LẮM Ý</span> 💌"
+        };
+
+        const dataSet2 = {
+            questions: [
+                { q: "👤 Trong nhóm có người tên Jaysonlei. Lấy chữ cái CUỐI CÙNG?", a: ["i"], char: "I" },
+                { q: "👩‍🎤 Nữ ca sĩ khách mời bài 'Sớm Muộn Thì' tên là gì?", a: ["lamoon"], char: "L" },
+                { q: "🕶️ Hustlang Robber xuất thân từ giới nào? ", a: ["underground", "u"], char: "U" },
+                { q: "⏳ Tên bài hát là '... Muộn Thì'? (từ đầu tiên)", a: ["sớm"], char: "S" },
+                { q: "🎵 Nghệ danh của Bách Béo là ? ", a: ["mason", "mason nguyễn"], char: "M" }
+            ],
+            finalMsg: "🧩 <b style='font-size:2rem;'>I · L · U · S · M</b><br><br>💘 <span style='background:#ffe0e5; padding:12px; display:inline-block; border-radius:30px;'>I LOVE U SO MUCH</span> 💘"
+        };
+
+        // ---------- BIẾN TOÀN CỤC ----------
+        let currentSet = null;
+        let currentIndex = 0;
+        let userCollectedChars = [];
+
+        // ---------- BẮT ĐẦU GAME ----------
+        function startQuiz(setIndex) {
+            currentSet = (setIndex === 1) ? dataSet1 : dataSet2;
+            currentIndex = 0;
+            userCollectedChars = [];
+
+            // Hiện nút quay lại ở màn hình chính
+            document.getElementById('back-to-select-btn').style.display = 'block';
+
+            document.getElementById('screen-select').classList.remove('active');
+            document.getElementById('screen-quiz').classList.add('active');
+
+            // Vẽ các chấm tròn
+            const dots = document.getElementById('dots');
+            dots.innerHTML = '';
+            for (let i = 0; i < currentSet.questions.length; i++) {
+                let dot = document.createElement('span');
+                dot.classList.add('dot');
+                dots.appendChild(dot);
+            }
+
+            loadQuestion();
+        }
+
+        // ---------- LOAD CÂU HỎI ----------
+        function loadQuestion() {
+            const q = currentSet.questions[currentIndex];
+            document.getElementById('question-text').innerText = `📌 ${q.q}`;
+            document.getElementById('answer-input').value = '';
+            document.getElementById('answer-input').focus();
+
+            // active dot
+            let dots = document.getElementsByClassName('dot');
+            for (let d of dots) d.classList.remove('active');
+            if (dots[currentIndex]) dots[currentIndex].classList.add('active');
+        }
+
+        // ---------- KIỂM TRA ĐÁP ÁN ----------
+        function checkAnswer() {
+            let input = document.getElementById('answer-input').value.trim().toLowerCase();
+            let correctList = currentSet.questions[currentIndex].a;
+
+            // Kiểm tra linh hoạt: nếu đáp án có trong input hoặc input chứa đáp án
+            let isCorrect = correctList.some(ans => 
+                input.includes(ans.toLowerCase()) || ans.toLowerCase().includes(input)
+            );
+
+            if (isCorrect) {
+                let charUnlock = currentSet.questions[currentIndex].char;
+                userCollectedChars.push(charUnlock);
+
+                document.getElementById('unlocked-letter').innerText = charUnlock;
+                document.getElementById('modal-correct').style.display = 'flex';
+            } else {
+                let quizScreen = document.getElementById('screen-quiz');
+                quizScreen.classList.add('shake');
+                setTimeout(() => quizScreen.classList.remove('shake'), 500);
+                alert("💔 Sai mất rồi! Thử lại nha em iu 💔");
+            }
+        }
+
+        // ---------- CHUYỂN CÂU TIẾP THEO ----------
+        function nextQuestion() {
+            document.getElementById('modal-correct').style.display = 'none';
+            currentIndex++;
+
+            if (currentIndex < currentSet.questions.length) {
+                loadQuestion();
+            } else {
+                document.getElementById('screen-quiz').classList.remove('active');
+                document.getElementById('screen-result').classList.add('active');
+                document.getElementById('final-message-text').innerHTML = currentSet.finalMsg;
+                for (let i = 0; i < 40; i++) {
+                    setTimeout(createHeart, i * 30);
+                }
+            }
+        }
+
+        // ---------- HIỆU ỨNG TIM BAY ----------
+        function createHeart() {
+            const heartEl = document.createElement('div');
+            heartEl.classList.add('heart-bg');
+            heartEl.innerText = ['❤️','🧡','💛','💚','💙','💜','🤍','💖','💗','💓'][Math.floor(Math.random() * 10)];
+            heartEl.style.left = Math.random() * 100 + '%';
+            heartEl.style.fontSize = Math.floor(Math.random() * 35 + 18) + 'px';
+            heartEl.style.animationDuration = Math.floor(Math.random() * 6 + 4) + 's';
+            document.body.appendChild(heartEl);
+
+            setTimeout(() => {
+                heartEl.remove();
+            }, 10000);
+        }
+
+        setInterval(() => {
+            if (Math.random() > 0.4) createHeart();
+        }, 280);
+
+        // ---------- CHỨC NĂNG QUAY LẠI MÀN HÌNH CHỌN GÓI ----------
+        function backToSelect() {
+            // Ẩn tất cả màn hình
+            document.getElementById('screen-select').classList.add('active');
+            document.getElementById('screen-quiz').classList.remove('active');
+            document.getElementById('screen-result').classList.remove('active');
+            
+            // Ẩn popup nếu đang hiện
+            document.getElementById('modal-correct').style.display = 'none';
+            closeConfirmModal();
+            
+            // Ẩn nút quay lại ở màn hình chính (chỉ hiện khi đã chọn gói)
+            document.getElementById('back-to-select-btn').style.display = 'none';
+            
+            // Reset dữ liệu
+            currentSet = null;
+            currentIndex = 0;
+            userCollectedChars = [];
+        }
+
+        function confirmBack() {
+            document.getElementById('modal-confirm-back').style.display = 'flex';
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('modal-confirm-back').style.display = 'none';
+        }
+
+        function backToSelectFromResult() {
+            backToSelect();
+        }
+
+        // ---------- PHÍM ENTER ----------
+        document.addEventListener('DOMContentLoaded', () => {
+            const answerInput = document.getElementById('answer-input');
+            if (answerInput) {
+                answerInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        checkAnswer();
+                    }
+                });
+            }
+        });
+
+        window.nextQuestion = nextQuestion;
+        window.startQuiz = startQuiz;
+        window.checkAnswer = checkAnswer;
+        window.backToSelect = backToSelect;
+        window.confirmBack = confirmBack;
+        window.closeConfirmModal = closeConfirmModal;
+        window.backToSelectFromResult = backToSelectFromResult;
+
+        // Tự động focus ô input
+        const observer = new MutationObserver(() => {
+            if (document.getElementById('screen-quiz').classList.contains('active')) {
+                setTimeout(() => document.getElementById('answer-input')?.focus(), 100);
+            }
+        });
+        observer.observe(document.getElementById('screen-quiz'), { attributes: true, attributeFilter: ['class'] });
+    </script>
+</body>
+</html>
