@@ -247,7 +247,6 @@
             background: #8a8a8a;
         }
 
-        /* Thêm style cho dòng chữ lãng mạn */
         .romance-text {
             font-size: 1.4rem;
             color: #d63384;
@@ -270,14 +269,13 @@
 </head>
 <body>
 
+    <!-- Các màn hình -->
     <div id="screen-select" class="container screen active">
         <h1>💌 ĐINH VŨ LÂM 💌</h1>
         <p style="font-size:1.7rem; margin:0;">❤️ 14/02 ❤️</p>
-        <p style="background: #ffe5e8; border-radius: 30px; padding: 12px;">Hôm nay anh có thử thách siêu cấp dành cho em! Chọn ngay một gói để nhận mật thư 🥰</p>
-        <button class="btn" onclick="startQuiz(1)">🌸 GÓI 1: YOU AND ME 🌸</button>
+        <p style="background: #ffe5e8; border-radius: 30px; padding: 12px;">Hôm nay mìn có 1 mini game cho bạn ! Chọn ngay một gói để nhận mật thư 🥰</p>
+        <button class="btn" onclick="startQuiz(1)">🌸 GÓI 1: IDOL & SỞ THÍCH 🌸</button>
         <button class="btn" onclick="startQuiz(2)">🎧 GÓI 2: TEAM "SỚM MUỘN THÌ" 🎧</button>
-        
-        <button id="back-to-select-btn" class="btn back-btn" onclick="backToSelect()" style="display: none;">⬅️ QUAY LẠI CHỌN GÓI</button>
     </div>
 
     <div id="screen-quiz" class="container screen">
@@ -298,12 +296,21 @@
         <button class="btn btn-small" onclick="backToSelectFromResult()" style="background: #ff8c9f; border-bottom-color: #a1354b; margin-top: 10px;">🔙 QUAY LẠI CHỌN GÓI</button>
     </div>
 
+    <!-- Modal thông báo đúng/sai -->
     <div id="modal-correct" class="modal">
         <div class="modal-content">
-            <h2 style="color:#a4133c; font-size:2rem;">BING BONG!</h2>
+            <h2 style="color:#a4133c; font-size:2rem;">🎉 CHÍNH XÁC! 🎉</h2>
             <p style="font-size:1.6rem;">Em mở được chữ:</p>
             <span class="letter-unlock" id="unlocked-letter">A</span>
-            <button class="btn" onclick="nextQuestion()" style="background: #ff8c9f; border-bottom-color: #a1354b;">👉 TIẾP THEO 👈</button>
+            <button class="btn" onclick="nextQuestion()" style="background: #ff8c9f; border-bottom-color: #a1354b;">👉 CÂU TIẾP THEO 👈</button>
+        </div>
+    </div>
+
+    <div id="modal-wrong" class="modal">
+        <div class="modal-content">
+            <h2 style="color:#a4133c; font-size:2rem;">😅 ÚI CHÀ! 😅</h2>
+            <p style="font-size:1.6rem; margin: 20px 0;">Chưa đúng rùi, thử lại nha ! 💔</p>
+            <button class="btn" onclick="closeWrongModal()" style="background: #ff4d6d;">💪 THỬ LẠI NGAY</button>
         </div>
     </div>
 
@@ -320,134 +327,133 @@
     </div>
 
     <script>
-        // ---------- 🍓 DỮ LIỆU CỰC YÊU (ĐÃ CẬP NHẬT FINAL MSG) 🍓 ----------
         const commonLoveMessage = "<span class='romance-text'>Mong rằng sau này mình sẽ bên nhau những ngày nắng, tựa vào nhau những ngày mưa, luôn cười cùng nhau những ngày đẹp. ☀️🌧️🌈</span>";
 
+        // Bộ câu hỏi cho gói 1 và gói 2
         const dataSet1 = {
             questions: [
-                { q: "🎤 Chủ nhân bài 'Baby' huyền thoại là ai? ", a: ["bieber", "justin bieber"], char: "B" },
-                { q: "🌻 Post Malone có bài gì về loài hoa ĐVL rất thích? ", a: ["sunflower"], char: "O" },
-                { q: "😢 Người ở bên ĐVL hơn 10 năm nay, lúc vui lúc buồn? ", a: ["mu", "manchester united"], char: "M" },
-                { q: "🎙️ Phúc Du rap: '... chối nhẹ nhàng thôi'. Điền từ còn thiếu?", a: ["từ"], char: "T" },
-                { q: "🔊 Rapper nào thường kết hợp với Masew ?", a: ["bray", "b ray"], char: "B" },
-                { q: "💰 Thứ em mong chờ mòn mỏi gần đây? ", a: ["lương", "tiền lương"], char: "L" },
-                { q: "🔤 Chữ cái cuối cùng trong tên 'Phạm Anh Duy'?", a: ["y"], char: "Y" }
+                { q: "🎤 Chủ nhân bài hát Baby? ", a: ["bieber", "justin bieber"], char: "B" },
+                { q: "🌻 Post Malone có bài gì về loài hoa ĐVL rất thích?", a: ["sunflower"], char: "O" },
+                { q: "⚽ Chính thất ở bên ĐVL hơn 10 năm nay, làm ĐVL lúc vui lúc buồn?", a: ["mu", "manchester united"], char: "M" },
+                { q: "🎵 Phúc Du: '... chối nhẹ nhàng thôi'. (Điền 1 từ)", a: ["từ"], char: "T" },
+                { q: "😎 Một người làm nhạc với Masew?", a: ["bray", "b ray"], char: "B" },
+                { q: "💰 Thứ em rất mong chờ mòn mỏi gần đây?", a: ["lương", "tiền lương"], char: "L" },
+                { q: "🔤 Chọn 1 chữ cái trong tên Phạm Anh Duy?", a: ["y"], char: "Y" }
             ],
-            // Đã thêm lời chúc vào cuối
             finalMsg: "🧩 <b style='font-size:2rem;'>B · O · M · T · B · L · Y</b><br><br>💌 <span style='background:#ffe0e5; padding:12px; display:inline-block; border-radius:30px;'>BẠN ƠI MÌNH THÍT BẠN LẮM Ý</span> 💌<br><br>" + commonLoveMessage
         };
 
         const dataSet2 = {
             questions: [
-                { q: "👤 Trong nhóm có người tên Jaysonlei. Lấy chữ cái CUỐI CÙNG?", a: ["i"], char: "I" },
-                { q: "👩‍🎤 Nữ ca sĩ khách mời bài 'Sớm Muộn Thì' tên là gì?", a: ["lamoon"], char: "L" },
-                { q: "🕶️ Hustlang Robber xuất thân từ giới nào? ", a: ["underground", "u"], char: "U" },
-                { q: "⏳ Tên bài hát là '... Muộn Thì'? (từ đầu tiên)", a: ["sớm"], char: "S" },
-                { q: "🎵 Nghệ danh của Bách Béo là ? ", a: ["mason", "mason nguyễn"], char: "M" }
+                { q: "👤 Trong nhóm 'Sớm Muộn Thì' có Jaysonlei. Lấy chữ cái CUỐI CÙNG?", a: ["i"], char: "I" },
+                { q: "👩‍🎤 Nữ ca sĩ khách mời xinh đẹp hỗ trợ?", a: ["lamoon"], char: "L" },
+                { q: "🎤 Người lè nhè với người ngoài nhưng trong rap gọi là mumble?", a: ["hustlang robber", "robber"], char: "U" },
+                { q: "🎼 Tên bài hát là '... Muộn Thì'?", a: ["sớm"], char: "S" },
+                { q: "🐷 Nghệ danh của Bách Béo là gì?", a: ["mason", "mason nguyễn"], char: "M" }
             ],
-            // Đã thêm lời chúc vào cuối
             finalMsg: "🧩 <b style='font-size:2rem;'>I · L · U · S · M</b><br><br>💘 <span style='background:#ffe0e5; padding:12px; display:inline-block; border-radius:30px;'>I LOVE U SO MUCH</span> 💘<br><br>" + commonLoveMessage
         };
 
-        // ---------- BIẾN TOÀN CỤC ----------
         let currentSet = null;
         let currentIndex = 0;
         let userCollectedChars = [];
 
-        // ---------- CÁC HÀM XỬ LÝ ----------
+        // Hàm chuyển màn hình
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Bắt đầu quiz theo gói
         function startQuiz(setIndex) {
-            currentSet = (setIndex === 1) ? dataSet1 : dataSet2;
+            currentSet = setIndex === 1 ? dataSet1 : dataSet2;
             currentIndex = 0;
             userCollectedChars = [];
 
-            document.getElementById('back-to-select-btn').style.display = 'block';
-            document.getElementById('screen-select').classList.remove('active');
-            document.getElementById('screen-quiz').classList.add('active');
+            showScreen('screen-quiz');
+            updateDots();
+            displayQuestion();
 
-            const dots = document.getElementById('dots');
-            dots.innerHTML = '';
-            for (let i = 0; i < currentSet.questions.length; i++) {
-                let dot = document.createElement('span');
-                dot.classList.add('dot');
-                dots.appendChild(dot);
+            // Focus vào input
+            setTimeout(() => document.getElementById('answer-input').focus(), 200);
+
+            // Xử lý phím Enter
+            document.getElementById('answer-input').onkeypress = (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    checkAnswer();
+                }
+            };
+        }
+
+        // Hiển thị câu hỏi
+        function displayQuestion() {
+            if (currentIndex < currentSet.questions.length) {
+                document.getElementById('question-text').innerText = currentSet.questions[currentIndex].q;
+                document.getElementById('answer-input').value = '';
+                document.getElementById('answer-input').focus();
+            } else {
+                // Hoàn thành quiz -> hiện kết quả
+                showResult();
             }
-            loadQuestion();
         }
 
-        function loadQuestion() {
-            const q = currentSet.questions[currentIndex];
-            document.getElementById('question-text').innerText = `📌 ${q.q}`;
-            document.getElementById('answer-input').value = '';
-            document.getElementById('answer-input').focus();
-
-            let dots = document.getElementsByClassName('dot');
-            for (let d of dots) d.classList.remove('active');
-            if (dots[currentIndex]) dots[currentIndex].classList.add('active');
+        // Cập nhật dấu chấm tiến độ
+        function updateDots() {
+            const dotsContainer = document.getElementById('dots');
+            let html = '';
+            for (let i = 0; i < currentSet.questions.length; i++) {
+                const activeClass = (i === currentIndex) ? 'active' : '';
+                html += `<span class="dot ${activeClass}"></span>`;
+            }
+            dotsContainer.innerHTML = html;
         }
 
+        // Kiểm tra câu trả lời
         function checkAnswer() {
-            let input = document.getElementById('answer-input').value.trim().toLowerCase();
-            let correctList = currentSet.questions[currentIndex].a;
-            
-            let isCorrect = correctList.some(ans => 
-                input.includes(ans.toLowerCase()) || ans.toLowerCase().includes(input)
-            );
+            const input = document.getElementById('answer-input').value.trim().toLowerCase();
+            if (input === '') {
+                alert('Nhập câu trả lời đi em ơi!');
+                return;
+            }
+
+            const question = currentSet.questions[currentIndex];
+            const isCorrect = question.a.some(ans => input.includes(ans.toLowerCase()));
 
             if (isCorrect) {
-                let charUnlock = currentSet.questions[currentIndex].char;
-                userCollectedChars.push(charUnlock);
-                document.getElementById('unlocked-letter').innerText = charUnlock;
+                // Lưu chữ cái
+                userCollectedChars.push(question.char);
+
+                // Hiển thị modal đúng
+                document.getElementById('unlocked-letter').innerText = question.char;
                 document.getElementById('modal-correct').style.display = 'flex';
             } else {
-                let quizScreen = document.getElementById('screen-quiz');
-                quizScreen.classList.add('shake');
-                setTimeout(() => quizScreen.classList.remove('shake'), 500);
-                alert("💔 Sai mất rồi! Thử lại nha em iu 💔");
+                // Hiển thị modal sai
+                document.getElementById('modal-wrong').style.display = 'flex';
             }
         }
 
+        // Đóng modal sai
+        function closeWrongModal() {
+            document.getElementById('modal-wrong').style.display = 'none';
+            document.getElementById('answer-input').focus();
+        }
+
+        // Chuyển sang câu tiếp theo
         function nextQuestion() {
             document.getElementById('modal-correct').style.display = 'none';
             currentIndex++;
-
-            if (currentIndex < currentSet.questions.length) {
-                loadQuestion();
-            } else {
-                document.getElementById('screen-quiz').classList.remove('active');
-                document.getElementById('screen-result').classList.add('active');
-                document.getElementById('final-message-text').innerHTML = currentSet.finalMsg;
-                for (let i = 0; i < 40; i++) {
-                    setTimeout(createHeart, i * 30);
-                }
-            }
+            updateDots();
+            displayQuestion();
         }
 
-        function createHeart() {
-            const heartEl = document.createElement('div');
-            heartEl.classList.add('heart-bg');
-            heartEl.innerText = ['❤️','🧡','💛','💚','💙','💜','🤍','💖','💗','💓'][Math.floor(Math.random() * 10)];
-            heartEl.style.left = Math.random() * 100 + '%';
-            heartEl.style.fontSize = Math.floor(Math.random() * 35 + 18) + 'px';
-            heartEl.style.animationDuration = Math.floor(Math.random() * 6 + 4) + 's';
-            document.body.appendChild(heartEl);
-            setTimeout(() => { heartEl.remove(); }, 10000);
+        // Hiển thị kết quả
+        function showResult() {
+            showScreen('screen-result');
+            document.getElementById('final-message-text').innerHTML = currentSet.finalMsg;
         }
 
-        setInterval(() => {
-            if (Math.random() > 0.4) createHeart();
-        }, 280);
-
-        function backToSelect() {
-            document.getElementById('screen-select').classList.add('active');
-            document.getElementById('screen-quiz').classList.remove('active');
-            document.getElementById('screen-result').classList.remove('active');
-            document.getElementById('modal-correct').style.display = 'none';
-            closeConfirmModal();
-            document.getElementById('back-to-select-btn').style.display = 'none';
-            currentSet = null;
-            currentIndex = 0;
-        }
-
+        // Xác nhận thoát
         function confirmBack() {
             document.getElementById('modal-confirm-back').style.display = 'flex';
         }
@@ -456,30 +462,38 @@
             document.getElementById('modal-confirm-back').style.display = 'none';
         }
 
-        function backToSelectFromResult() {
-            backToSelect();
+        // Quay lại màn hình chọn gói
+        function backToSelect() {
+            closeConfirmModal();
+            document.getElementById('modal-correct').style.display = 'none';
+            document.getElementById('modal-wrong').style.display = 'none';
+            showScreen('screen-select');
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const answerInput = document.getElementById('answer-input');
-            if (answerInput) {
-                answerInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        checkAnswer();
-                    }
-                });
-            }
-        });
+        // Quay lại từ màn hình kết quả
+        function backToSelectFromResult() {
+            showScreen('screen-select');
+        }
 
-        // Tự động focus input
-        const observer = new MutationObserver(() => {
-            if (document.getElementById('screen-quiz').classList.contains('active')) {
-                setTimeout(() => document.getElementById('answer-input')?.focus(), 100);
-            }
-        });
-        observer.observe(document.getElementById('screen-quiz'), { attributes: true, attributeFilter: ['class'] });
+        // Tạo trái tim bay (thêm chút lãng mạn)
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart-bg';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 5 + 's';
+            heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }
+        setInterval(createHeart, 500);
 
+        // Nhấn Enter trong modal cũng đóng (tiện lợi)
+        window.onkeydown = (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+            }
+        };
     </script>
 </body>
 </html>
