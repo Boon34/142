@@ -247,8 +247,14 @@
             background: #8a8a8a;
         }
 
-        #hint {
-            display: none;
+        /* Thêm style cho dòng chữ lãng mạn */
+        .romance-text {
+            font-size: 1.4rem;
+            color: #d63384;
+            margin-top: 20px;
+            display: block;
+            line-height: 1.5;
+            font-style: italic;
         }
 
         @media (max-width: 450px) {
@@ -257,12 +263,13 @@
             .btn { font-size: 1.1rem; padding: 14px; }
             .btn-small { width: 80%; }
             .letter-unlock { font-size: 4rem; }
+            .final-msg { font-size: 1.5rem; }
+            .romance-text { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Màn hình chính: chọn gói + nút quay lại (mặc định không hiện, chỉ hiện khi cần) -->
     <div id="screen-select" class="container screen active">
         <h1>💌 ĐINH VŨ LÂM 💌</h1>
         <p style="font-size:1.7rem; margin:0;">❤️ 14/02 ❤️</p>
@@ -270,11 +277,9 @@
         <button class="btn" onclick="startQuiz(1)">🌸 GÓI 1: YOU AND ME 🌸</button>
         <button class="btn" onclick="startQuiz(2)">🎧 GÓI 2: TEAM "SỚM MUỘN THÌ" 🎧</button>
         
-        <!-- Nút quay lại - mặc định ẩn, chỉ hiện khi đã chọn gói và muốn quay lại -->
         <button id="back-to-select-btn" class="btn back-btn" onclick="backToSelect()" style="display: none;">⬅️ QUAY LẠI CHỌN GÓI</button>
     </div>
 
-    <!-- Màn hình câu hỏi -->
     <div id="screen-quiz" class="container screen">
         <div class="progress-dots" id="dots"></div>
         <h2 id="question-text">Đang tải câu hỏi...</h2>
@@ -284,7 +289,6 @@
         <button class="btn btn-small" onclick="confirmBack()" style="background: #b8b8b8; border-bottom-color: #6e6e6e; margin-top: 30px;">🔙 THOÁT RA MÀN HÌNH CHÍNH</button>
     </div>
 
-    <!-- Màn hình kết thúc -->
     <div id="screen-result" class="container screen">
         <h1>🎊 HOÀN HẢO 🎊</h1>
         <p style="font-size:1.8rem;">Em là số 1!!!</p>
@@ -294,7 +298,6 @@
         <button class="btn btn-small" onclick="backToSelectFromResult()" style="background: #ff8c9f; border-bottom-color: #a1354b; margin-top: 10px;">🔙 QUAY LẠI CHỌN GÓI</button>
     </div>
 
-    <!-- Popup khi đúng -->
     <div id="modal-correct" class="modal">
         <div class="modal-content">
             <h2 style="color:#a4133c; font-size:2rem;">BING BONG!</h2>
@@ -304,7 +307,6 @@
         </div>
     </div>
 
-    <!-- Popup xác nhận thoát -->
     <div id="modal-confirm-back" class="modal">
         <div class="modal-content">
             <h2 style="color:#a4133c;">⚠️ THOÁT GAME ⚠️</h2>
@@ -318,7 +320,9 @@
     </div>
 
     <script>
-        // ---------- 🍓 DỮ LIỆU CỰC YÊU - ĐÃ THÊM ĐÁP ÁN 🍓 ----------
+        // ---------- 🍓 DỮ LIỆU CỰC YÊU (ĐÃ CẬP NHẬT FINAL MSG) 🍓 ----------
+        const commonLoveMessage = "<span class='romance-text'>Mong rằng sau này mình sẽ bên nhau những ngày nắng, tựa vào nhau những ngày mưa, luôn cười cùng nhau những ngày đẹp. ☀️🌧️🌈</span>";
+
         const dataSet1 = {
             questions: [
                 { q: "🎤 Chủ nhân bài 'Baby' huyền thoại là ai? ", a: ["bieber", "justin bieber"], char: "B" },
@@ -329,7 +333,8 @@
                 { q: "💰 Thứ em mong chờ mòn mỏi gần đây? ", a: ["lương", "tiền lương"], char: "L" },
                 { q: "🔤 Chữ cái cuối cùng trong tên 'Phạm Anh Duy'?", a: ["y"], char: "Y" }
             ],
-            finalMsg: "🧩 <b style='font-size:2rem;'>B · O · M · T · B · L · Y</b><br><br>💌 <span style='background:#ffe0e5; padding:12px; display:inline-block; border-radius:30px;'>BẠN ƠI MÌNH THÍT BẠN LẮM Ý</span> 💌"
+            // Đã thêm lời chúc vào cuối
+            finalMsg: "🧩 <b style='font-size:2rem;'>B · O · M · T · B · L · Y</b><br><br>💌 <span style='background:#ffe0e5; padding:12px; display:inline-block; border-radius:30px;'>BẠN ƠI MÌNH THÍT BẠN LẮM Ý</span> 💌<br><br>" + commonLoveMessage
         };
 
         const dataSet2 = {
@@ -340,7 +345,8 @@
                 { q: "⏳ Tên bài hát là '... Muộn Thì'? (từ đầu tiên)", a: ["sớm"], char: "S" },
                 { q: "🎵 Nghệ danh của Bách Béo là ? ", a: ["mason", "mason nguyễn"], char: "M" }
             ],
-            finalMsg: "🧩 <b style='font-size:2rem;'>I · L · U · S · M</b><br><br>💘 <span style='background:#ffe0e5; padding:12px; display:inline-block; border-radius:30px;'>I LOVE U SO MUCH</span> 💘"
+            // Đã thêm lời chúc vào cuối
+            finalMsg: "🧩 <b style='font-size:2rem;'>I · L · U · S · M</b><br><br>💘 <span style='background:#ffe0e5; padding:12px; display:inline-block; border-radius:30px;'>I LOVE U SO MUCH</span> 💘<br><br>" + commonLoveMessage
         };
 
         // ---------- BIẾN TOÀN CỤC ----------
@@ -348,19 +354,16 @@
         let currentIndex = 0;
         let userCollectedChars = [];
 
-        // ---------- BẮT ĐẦU GAME ----------
+        // ---------- CÁC HÀM XỬ LÝ ----------
         function startQuiz(setIndex) {
             currentSet = (setIndex === 1) ? dataSet1 : dataSet2;
             currentIndex = 0;
             userCollectedChars = [];
 
-            // Hiện nút quay lại ở màn hình chính
             document.getElementById('back-to-select-btn').style.display = 'block';
-
             document.getElementById('screen-select').classList.remove('active');
             document.getElementById('screen-quiz').classList.add('active');
 
-            // Vẽ các chấm tròn
             const dots = document.getElementById('dots');
             dots.innerHTML = '';
             for (let i = 0; i < currentSet.questions.length; i++) {
@@ -368,29 +371,24 @@
                 dot.classList.add('dot');
                 dots.appendChild(dot);
             }
-
             loadQuestion();
         }
 
-        // ---------- LOAD CÂU HỎI ----------
         function loadQuestion() {
             const q = currentSet.questions[currentIndex];
             document.getElementById('question-text').innerText = `📌 ${q.q}`;
             document.getElementById('answer-input').value = '';
             document.getElementById('answer-input').focus();
 
-            // active dot
             let dots = document.getElementsByClassName('dot');
             for (let d of dots) d.classList.remove('active');
             if (dots[currentIndex]) dots[currentIndex].classList.add('active');
         }
 
-        // ---------- KIỂM TRA ĐÁP ÁN ----------
         function checkAnswer() {
             let input = document.getElementById('answer-input').value.trim().toLowerCase();
             let correctList = currentSet.questions[currentIndex].a;
-
-            // Kiểm tra linh hoạt: nếu đáp án có trong input hoặc input chứa đáp án
+            
             let isCorrect = correctList.some(ans => 
                 input.includes(ans.toLowerCase()) || ans.toLowerCase().includes(input)
             );
@@ -398,7 +396,6 @@
             if (isCorrect) {
                 let charUnlock = currentSet.questions[currentIndex].char;
                 userCollectedChars.push(charUnlock);
-
                 document.getElementById('unlocked-letter').innerText = charUnlock;
                 document.getElementById('modal-correct').style.display = 'flex';
             } else {
@@ -409,7 +406,6 @@
             }
         }
 
-        // ---------- CHUYỂN CÂU TIẾP THEO ----------
         function nextQuestion() {
             document.getElementById('modal-correct').style.display = 'none';
             currentIndex++;
@@ -426,7 +422,6 @@
             }
         }
 
-        // ---------- HIỆU ỨNG TIM BAY ----------
         function createHeart() {
             const heartEl = document.createElement('div');
             heartEl.classList.add('heart-bg');
@@ -435,34 +430,22 @@
             heartEl.style.fontSize = Math.floor(Math.random() * 35 + 18) + 'px';
             heartEl.style.animationDuration = Math.floor(Math.random() * 6 + 4) + 's';
             document.body.appendChild(heartEl);
-
-            setTimeout(() => {
-                heartEl.remove();
-            }, 10000);
+            setTimeout(() => { heartEl.remove(); }, 10000);
         }
 
         setInterval(() => {
             if (Math.random() > 0.4) createHeart();
         }, 280);
 
-        // ---------- CHỨC NĂNG QUAY LẠI MÀN HÌNH CHỌN GÓI ----------
         function backToSelect() {
-            // Ẩn tất cả màn hình
             document.getElementById('screen-select').classList.add('active');
             document.getElementById('screen-quiz').classList.remove('active');
             document.getElementById('screen-result').classList.remove('active');
-            
-            // Ẩn popup nếu đang hiện
             document.getElementById('modal-correct').style.display = 'none';
             closeConfirmModal();
-            
-            // Ẩn nút quay lại ở màn hình chính (chỉ hiện khi đã chọn gói)
             document.getElementById('back-to-select-btn').style.display = 'none';
-            
-            // Reset dữ liệu
             currentSet = null;
             currentIndex = 0;
-            userCollectedChars = [];
         }
 
         function confirmBack() {
@@ -477,7 +460,6 @@
             backToSelect();
         }
 
-        // ---------- PHÍM ENTER ----------
         document.addEventListener('DOMContentLoaded', () => {
             const answerInput = document.getElementById('answer-input');
             if (answerInput) {
@@ -490,21 +472,14 @@
             }
         });
 
-        window.nextQuestion = nextQuestion;
-        window.startQuiz = startQuiz;
-        window.checkAnswer = checkAnswer;
-        window.backToSelect = backToSelect;
-        window.confirmBack = confirmBack;
-        window.closeConfirmModal = closeConfirmModal;
-        window.backToSelectFromResult = backToSelectFromResult;
-
-        // Tự động focus ô input
+        // Tự động focus input
         const observer = new MutationObserver(() => {
             if (document.getElementById('screen-quiz').classList.contains('active')) {
                 setTimeout(() => document.getElementById('answer-input')?.focus(), 100);
             }
         });
         observer.observe(document.getElementById('screen-quiz'), { attributes: true, attributeFilter: ['class'] });
+
     </script>
 </body>
 </html>
