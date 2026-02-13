@@ -256,12 +256,43 @@
             font-style: italic;
         }
 
-        /* Thêm style cho popup nhắc nhở đặc biệt */
         .hint-text {
             color: #d90429;
             font-size: 1.4rem;
             font-weight: bold;
             margin: 20px 0;
+        }
+        
+        /* CSS CHO HỘP QUÀ */
+        .gift-container {
+            margin: 30px auto;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .gift-container:hover {
+            transform: scale(1.1);
+        }
+        .gift-box {
+            font-size: 6rem;
+            animation: giftShake 2s infinite;
+            display: inline-block;
+        }
+        @keyframes giftShake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+        .hidden-gift {
+            display: none;
+            animation: popIn 0.8s;
+        }
+        .gift-label {
+            font-size: 1.6rem;
+            color: #d63384;
+            margin-bottom: 20px;
+            font-weight: bold;
         }
 
         @media (max-width: 450px) {
@@ -280,7 +311,7 @@
     <div id="screen-select" class="container screen active">
         <h1>💌 ĐINH VŨ LÂM 💌</h1>
         <p style="font-size:1.7rem; margin:0;">❤️ 14/02 ❤️</p>
-        <p style="background: #ffe5e8; border-radius: 30px; padding: 12px;">Hôm nay anh có thử thách siêu cấp dành cho em! Chọn ngay một gói để nhận mật thư 🥰</p>
+        <p style="background: #ffe5e8; border-radius: 30px; padding: 12px;">Hôm nay mìn có 1 minigame danh cho bạn ạ! Chọn ngay một gói để nhận mật thư 🥰</p>
         <button class="btn" onclick="startQuiz(1)">🌸 GÓI 1: IDOL & SỞ THÍCH 🌸</button>
         <button class="btn" onclick="startQuiz(2)">🎧 GÓI 2: TEAM "SỚM MUỘN THÌ" 🎧</button>
         
@@ -299,9 +330,27 @@
     <div id="screen-result" class="container screen">
         <h1>🎊 HOÀN HẢO 🎊</h1>
         <p style="font-size:1.8rem;">Em là số 1!!!</p>
-        <div class="final-msg" id="final-message-text"></div>
-        <p style="font-size:2rem; color:#c9184a;">anh yêu em ❤️</p>
-        <button class="btn" onclick="location.reload()">💘 CHƠI LẠI 💘</button>
+        
+        <div class="final-msg" id="final-code-text"></div>
+
+        <div id="gift-area">
+            <p class="gift-label">Bạn ơi, Lâm có một món quà dành cho bạn nè! 🎁</p>
+            <div class="gift-container" onclick="openGift()">
+                <div class="gift-box">🎁</div>
+                <p style="font-size: 1rem; color: #888;">(Ấn vào hộp quà đi nè)</p>
+            </div>
+        </div>
+
+        <div id="love-message-area" class="hidden-gift">
+            <div class="final-msg" style="background: #fff0f5; border: 4px dashed #ff69b4;">
+                <span class="romance-text" style="font-size: 1.6rem; line-height: 1.6;">
+                    " Cảm ơn em vì đã cho anh một cơ hội để có thể bên em, cảm ơn vì đã tin tưởng vào anh, cảm ơn vì đã đến.Mong rằng sau này mình sẽ bên nhau những ngày nắng, tựa vào nhau những ngày mưa, luôn cười cùng nhau những ngày đẹp. ☀️🌧️🌈"
+                </span>
+            </div>
+            <p style="font-size:2rem; color:#c9184a; margin-top: 20px;">Anh yêu em ❤️</p>
+        </div>
+
+        <button class="btn" onclick="location.reload()" style="margin-top: 30px;">💘 CHƠI LẠI 💘</button>
         <button class="btn btn-small" onclick="backToSelectFromResult()" style="background: #ff8c9f; border-bottom-color: #a1354b; margin-top: 10px;">🔙 QUAY LẠI CHỌN GÓI</button>
     </div>
 
@@ -335,11 +384,10 @@
     </div>
 
     <script>
-        const commonLoveMessage = "<span class='romance-text'>Mong rằng sau này mình sẽ bên nhau những ngày nắng, tựa vào nhau những ngày mưa, luôn cười cùng nhau những ngày đẹp. ☀️🌧️🌈</span>";
-
+        // Cập nhật dữ liệu câu hỏi (Tách lời chúc ra khỏi finalMsg để đưa vào hộp quà)
         const dataSet1 = {
             questions: [
-                { q: "🎤 Chủ nhân bài hát Baby ? ", a: ["bieber", "beiber"], char: "B" },
+                { q: "🎤 Chủ nhân bài hát Baby?", a: ["bieber", "beiber"], char: "B" },
                 { q: "🌻 Post Malone có bài gì về loài hoa ĐVL rất thích?", a: ["sunflower"], char: "O" },
                 { q: "⚽ Chính thất ở bên ĐVL hơn 10 năm nay, làm ĐVL lúc vui lúc buồn?", a: ["mu", "manchester united"], char: "M" },
                 { q: "🎵 Phúc Du: '... chối nhẹ nhàng thôi'. (Điền 1 từ)", a: ["từ"], char: "T" },
@@ -347,21 +395,18 @@
                 { q: "💰 Thứ em rất mong chờ mòn mỏi gần đây?", a: ["lương", "tiền lương"], char: "L" },
                 { q: "🔤 Chọn 1 chữ cái trong tên Phạm Anh Duy?", a: ["y"], char: "Y" }
             ],
-            finalMsg: "🧩 <b style='font-size:2rem;'>B · O · M · T · B · L · Y</b><br><br>💌 <span style='background:#ffe0e5; padding:12px; display:inline-block; border-radius:30px;'>BẠN ƠI MÌNH THÍT BẠN LẮM Ý</span> 💌<br><br>" + commonLoveMessage
+            codeMsg: "🧩 <b style='font-size:2rem;'>B · O · M · T · B · L · Y</b><br><br>💌 <span style='background:#ffe0e5; padding:12px; display:inline-block; border-radius:30px;'>BẠN ƠI MÌNH THÍT BẠN LẮM Ý</span> 💌"
         };
 
         const dataSet2 = {
             questions: [
-                { q: "👤 Trong nhóm 'Sớm Muộn Thì' có Jaysonlei. Lấy chữ cái CUỐI CÙNG?", a: ["i"], char: "I" },
+                { q: "👤 Trong nhóm 'Sớm Muộn Thì' có Jaysonlei. Lấy chữ cái cuối cùng?", a: ["i"], char: "I" },
                 { q: "👩‍🎤 Nữ ca sĩ khách mời xinh đẹp hỗ trợ?", a: ["lamoon"], char: "L" },
-                
-                // CÂU ROBBER: Bỏ "robber" ra khỏi đáp án đúng để xử lý riêng
                 { q: "🎤 Người lè nhè với người ngoài nhưng trong rap gọi là mumble?", a: ["hustlang robber", "u"], char: "U" },
-                
                 { q: "🎼 Tên bài hát là '... Muộn Thì'?", a: ["sớm"], char: "S" },
                 { q: "🐷 Nghệ danh của Bách Béo là gì?", a: ["mason", "mason nguyễn"], char: "M" }
             ],
-            finalMsg: "🧩 <b style='font-size:2rem;'>I · L · U · S · M</b><br><br>💘 <span style='background:#ffe0e5; padding:12px; display:inline-block; border-radius:30px;'>I LOVE U SO MUCH</span> 💘<br><br>" + commonLoveMessage
+            codeMsg: "🧩 <b style='font-size:2rem;'>I · L · U · S · M</b><br><br>💘 <span style='background:#ffe0e5; padding:12px; display:inline-block; border-radius:30px;'>I LOVE U SO MUCH</span> 💘"
         };
 
         let currentSet = null;
@@ -372,6 +417,10 @@
             currentSet = (setIndex === 1) ? dataSet1 : dataSet2;
             currentIndex = 0;
             userCollectedChars = [];
+
+            // Reset trạng thái hộp quà
+            document.getElementById('gift-area').style.display = 'block';
+            document.getElementById('love-message-area').style.display = 'none';
 
             document.getElementById('back-to-select-btn').style.display = 'block';
             document.getElementById('screen-select').classList.remove('active');
@@ -402,16 +451,12 @@
             let input = document.getElementById('answer-input').value.trim().toLowerCase();
             let correctList = currentSet.questions[currentIndex].a;
             
-            // --- LOGIC XỬ LÝ ĐẶC BIỆT CHO CÂU ROBBER ---
-            // Nếu là Gói 2 (dataSet2) VÀ là câu số 3 (index = 2)
             if (currentSet === dataSet2 && currentIndex === 2) {
-                // Nếu nhập "robber" mà KHÔNG có "hustlang"
                 if (input.includes("robber") && !input.includes("hustlang")) {
-                    showNotice("😙 GẦN ĐÚNG RỒI!", "Bạn ơi gần đúng rồi á, thiếu 1 cái họ nữa thoi là đầy đủ họ và tên rồi! 😜");
-                    return; // Dừng lại, không kiểm tra tiếp
+                    showNotice(" 😙 GẦN ĐÚNG RỒI!", "Bạn ơi gần đúng rồi á, thiếu 1 cái họ nữa thoi là đầy đủ họ và tên rồi! 😜");
+                    return; 
                 }
             }
-            // ---------------------------------------------
 
             let isCorrect = correctList.some(ans => 
                 input.includes(ans.toLowerCase()) || ans.toLowerCase().includes(input)
@@ -423,17 +468,13 @@
                 document.getElementById('unlocked-letter').innerText = charUnlock;
                 document.getElementById('modal-correct').style.display = 'flex';
             } else {
-                // Rung màn hình
                 let quizScreen = document.getElementById('screen-quiz');
                 quizScreen.classList.add('shake');
                 setTimeout(() => quizScreen.classList.remove('shake'), 500);
-                
-                // Báo sai bình thường
                 showNotice("😅 ÚI CHÀ! 😅", "Chưa đúng rùi, thử lại nha bé ơi! 💔");
             }
         }
         
-        // Hàm hiện Popup thông báo (Dùng chung cho SAI và GẦN ĐÚNG)
         function showNotice(title, msg) {
             document.getElementById('notice-title').innerText = title;
             document.getElementById('notice-msg').innerText = msg;
@@ -454,10 +495,25 @@
             } else {
                 document.getElementById('screen-quiz').classList.remove('active');
                 document.getElementById('screen-result').classList.add('active');
-                document.getElementById('final-message-text').innerHTML = currentSet.finalMsg;
+                
+                // Chỉ hiện mã code, ẩn lời chúc
+                document.getElementById('final-code-text').innerHTML = currentSet.codeMsg;
+                
+                // Hiệu ứng pháo giấy
                 for (let i = 0; i < 40; i++) {
                     setTimeout(createHeart, i * 30);
                 }
+            }
+        }
+
+        // HÀM MỞ QUÀ
+        function openGift() {
+            document.getElementById('gift-area').style.display = 'none'; // Ẩn hộp quà
+            document.getElementById('love-message-area').style.display = 'block'; // Hiện lời chúc
+            
+            // Bắn tim tung toé khi mở quà
+            for (let i = 0; i < 60; i++) {
+                setTimeout(createHeart, i * 20);
             }
         }
 
